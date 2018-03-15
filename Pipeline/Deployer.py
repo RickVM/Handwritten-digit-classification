@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[35]:
+# In[1]:
 
 
 from sklearn.externals import joblib
@@ -11,13 +11,13 @@ import datetime
 
 version = str(datetime.datetime.now())
 print(version)
-print("Loading model..")
-model = joblib.load("model.pkl")
+print("Loading pipeline..")
+model = joblib.load("pipeline.pkl")
 
-print("Saving model in version control..")
-joblib.dump(model, "./versions/model_"+ version +".pkl")
+print("Saving pipeline in version control..")
+joblib.dump(model, "./versions/Pipeline"+ version +".pkl")
      
-print("Saving model in production..")
-joblib.dump(model, "Production/model.pkl")
-print("Model deployed")
+print("Saving pipeline in production..")
+joblib.dump(model, "Production/pipeline.pkl")
+print("pipeline deployed")
 
