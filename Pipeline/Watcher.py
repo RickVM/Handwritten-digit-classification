@@ -1,12 +1,13 @@
 
 # coding: utf-8
 
-# In[17]:
+# In[1]:
 
 
 from sklearn.externals import joblib
 
-print("Starting evaluation")
+print("\nStarting evaluation..")
+print("--------------------------------------\n")
 print("Loading pipeline")
 pipeline = joblib.load("pipeline.pkl")
 print("pipeline loaded")
@@ -14,7 +15,7 @@ print("pipeline loaded")
 
 # Get evaluation data
 
-# In[18]:
+# In[2]:
 
 
 import pandas as pd
@@ -23,10 +24,10 @@ X = test_df.iloc[:,1:]
 y = test_df.iloc[:,0]
 
 y_pred = pipeline.predict(X)
+#X.describe()
 
 
-
-# In[65]:
+# In[7]:
 
 
 from sklearn.metrics import confusion_matrix
@@ -35,13 +36,13 @@ cm = confusion_matrix(y, y_pred)
 accuracy = accuracy_score(y, y_pred)
 
 print("Test results\n-------------------------------------------------------------\n")
-results = {"Accuracy":accuracy, "Confusion matrix":cm.tolist()}
+results = {"Accuracy":accuracy, "Confusion matrix":cm.tolist()} #TODO: Also include used train and test size
 print("Accuracy: {0}%\n".format(accuracy))
 print("Confusion matrix:")
 print(cm)
 
 
-# In[83]:
+# In[4]:
 
 
 import json
@@ -57,7 +58,7 @@ else:
     print("Warning, did not find any previous results!!")
 
 
-# In[76]:
+# In[5]:
 
 
 def compareResults(Results, PreviousResults):
@@ -86,7 +87,7 @@ def modelFailed():
     sys.exit(1)
 
 
-# In[80]:
+# In[6]:
 
 
 import datetime

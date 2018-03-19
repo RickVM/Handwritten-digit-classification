@@ -10,12 +10,15 @@ import pathlib
 import datetime
 
 version = str(datetime.datetime.now())
+
+print("\nDeployer started")
+print("--------------------------------------\n")
 print(version)
 print("Loading pipeline..")
 model = joblib.load("pipeline.pkl")
 
 print("Saving pipeline in version control..")
-joblib.dump(model, "./versions/Pipeline"+ version +".pkl")
+joblib.dump(model, "./versions/Pipeline_"+ version +".pkl")
      
 print("Saving pipeline in production..")
 joblib.dump(model, "Production/pipeline.pkl")

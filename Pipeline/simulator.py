@@ -7,12 +7,14 @@
 
 # Step 1. Split training and test data
 
-# In[1]:
+# In[5]:
 
 
 import pandas as pd
 
 def splitData(Trainsize, Testsize):
+    if (Trainsize + Testsize) > 1:
+        raise NameError('Trainsize + Testsize can not be bigger than 1!')
     #Enter data
     count = 42000
     trainsize = Trainsize #As percentage. Example: 25% should be entered as 0.25
@@ -38,7 +40,7 @@ def splitData(Trainsize, Testsize):
 
 # Step 2. Execute pipeline and run the production application.
 
-# In[2]:
+# In[3]:
 
 
 import os
@@ -60,7 +62,7 @@ def runPipeline():
         print("Model did not pass the test, aborting.")
 
 
-# In[3]:
+# In[4]:
 
 
 def frange(start, stop, step):
@@ -70,11 +72,11 @@ def frange(start, stop, step):
         i+=step
     
 
-for i in frange(0.001, 0.02, 0.004):
+for i in frange(0.4, 1, 0.2):
     splitData(i, 0.2)
     runPipeline()
     
 #Run once more, the accuracy should decrease with the result that the model should not be deployed.
-splitData(0.005, 0.2)
-runPipeline()
+#splitData(0.2, 0.2)
+#runPipeline()
 
