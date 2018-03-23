@@ -5,6 +5,9 @@
 
 
 from sklearn.externals import joblib
+import dill
+
+classicML = False
 
 print("\nStarting evaluation..")
 print("--------------------------------------\n")
@@ -12,10 +15,16 @@ print("Loading pipeline")
 pipeline = joblib.load("pipeline.pkl")
 print("pipeline loaded")
 
+if classicML == False:
+    from keras.models import load_model
+    print("Loading model")
+    classifier = load_model("model.h5")
+    print("Model loaded")
+
 
 # Get evaluation data
 
-# In[2]:
+# In[7]:
 
 
 import pandas as pd
@@ -23,11 +32,22 @@ test_df = pd.read_csv("test_data.csv")
 X = test_df.iloc[:,1:]
 y = test_df.iloc[:,0]
 
-y_pred = pipeline.predict(X)
-#X.describe()
+print("Running predictions")
+if classicML == False:
+    X = pipeline.transform(X)
+    y_pred = classifier.predict_classes(X)
+else:
+    y_pred = pipeline.predict(X)
 
 
-# In[7]:
+
+# In[8]:
+
+
+y_pred
+
+
+# In[9]:
 
 
 from sklearn.metrics import confusion_matrix

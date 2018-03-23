@@ -7,13 +7,14 @@
 
 # Step 1. Split training and test data
 
-# In[5]:
+# In[1]:
 
 
 import pandas as pd
+import numpy as np
 
 def splitData(Trainsize, Testsize):
-    if (Trainsize + Testsize) > 1:
+    if (float(Trainsize) + Testsize) > 1:
         raise NameError('Trainsize + Testsize can not be bigger than 1!')
     #Enter data
     count = 42000
@@ -27,9 +28,6 @@ def splitData(Trainsize, Testsize):
 
     df = pd.read_csv("../Train.csv")
 
-    
-    
-    
     test_df = df.iloc[count-testsize:,:]
     train_df = df.iloc[:trainsize,:]
 
@@ -40,7 +38,7 @@ def splitData(Trainsize, Testsize):
 
 # Step 2. Execute pipeline and run the production application.
 
-# In[3]:
+# In[2]:
 
 
 import os
@@ -62,7 +60,7 @@ def runPipeline():
         print("Model did not pass the test, aborting.")
 
 
-# In[4]:
+# In[ ]:
 
 
 def frange(start, stop, step):
@@ -72,11 +70,20 @@ def frange(start, stop, step):
         i+=step
     
 
-for i in frange(0.4, 1, 0.2):
+for i in frange(0.2, 0.8, 0.2):
     splitData(i, 0.2)
     runPipeline()
-    
-#Run once more, the accuracy should decrease with the result that the model should not be deployed.
-#splitData(0.2, 0.2)
+
+splitData(1, 0)
+runPipeline()
+
+#Run once more for final performance without test set
+#splitData(1, 0)
 #runPipeline()
+
+
+# In[ ]:
+
+
+print("Hi")
 
