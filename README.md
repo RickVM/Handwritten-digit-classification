@@ -26,7 +26,7 @@ and submitted through the kaggle API.
 Note that for this to work you need to get a kaggle key, save it it in production and use the last codeblock in the application notebook.  
 If it failed it is saved in /Pipeline/Versions/Failed/
 
-#Findings
+# Findings
 * Next time I'd rather generate performance reports through the use of matplotlib and seaborn rather than Excel, I feel this would better suit an automated environment.
 * Even with a very small dataset deep learning starts with better performance than XGBoost
 * Deep learning surpasses XGBoost performance overall
