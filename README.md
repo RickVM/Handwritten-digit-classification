@@ -3,11 +3,11 @@ Classification of digits with the MNIST dataset
 
 
 # The pipeline consists of:
-*Simulator      (Executes the full pipeline based upon input parameters.)  
-*Model trainer  (Trains the model)  
-*Model watcher  (Benchmarks the model performance against a test-set and saves metrics. Returns a pass or fail.)  
-*Deployer  (If model passed the deployer saves the model in production)  
-*Application (Runs model predictions against Kaggle test-set and submits these with the Kaggle API.)  
+* Simulator      (Executes the full pipeline based upon input parameters.)  
+* Model trainer  (Trains the model)  
+* Model watcher  (Benchmarks the model performance against a test-set and saves metrics. Returns a pass or fail.)  
+* Deployer  (If model passed the deployer saves the model in production)  
+* Application (Runs model predictions against Kaggle test-set and submits these with the Kaggle API.)  
 
 # Usage
 The simulator can be used to run and adjust the full program aswell as the Train/set dataset size.
