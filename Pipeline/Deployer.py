@@ -16,7 +16,7 @@ version = str(datetime.datetime.now())
 print("\nDeployer started")
 print("--------------------------------------\n")
 print(version)
-classicML = False
+classicML = True
 pipeline_name = 'pipeline'
 model_name = 'model'
 

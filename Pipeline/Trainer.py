@@ -1,13 +1,14 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[10]:
 
 
 import numpy as np
 import pandas as pd
 
-classicML = False #Used in saving process 
+classicML = True #Used in saving process 
+preprocessing = True
 
 print("\n\nStarting model training..")
 print("--------------------------------------\n")
@@ -16,11 +17,13 @@ X = train_df.iloc[:,1:]
 y = train_df.iloc[:,0]
 
 
-# In[12]:
+# In[11]:
 
 
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler
+
+
 
 if classicML:
     # XGBoost Code
@@ -32,12 +35,19 @@ if classicML:
     #                           ])
     #Based upon random search results.
     #Accuracy score was 91% on 20% of the training data.
-    pipeline = Pipeline(steps=[('minmaxscaler', MinMaxScaler(feature_range=(0, 1), copy=True)),
-                               ('XgbClassifier', XGBClassifier(objective = 'multi:softmax',
-                                                               gamma = 0.9,
-                                                               learning_rate = 0.375,
-                                                               max_depth = 9,
-                                                               n_estimators = 9))])
+    if preprocessing:
+        pipeline = Pipeline(steps=[('minmaxscaler', MinMaxScaler(feature_range=(0, 1), copy=True)),
+                                   ('XgbClassifier', XGBClassifier(objective = 'multi:softmax',
+                                                                   gamma = 0.9,
+                                                                   learning_rate = 0.375,
+                                                                   max_depth = 9,
+                                                                   n_estimators = 9))])
+    else:
+         pipeline = Pipeline(steps=[('XgbClassifier', XGBClassifier(objective = 'multi:softmax',
+                                                                   gamma = 0.9,
+                                                                   learning_rate = 0.375,
+                                                                   max_depth = 9,
+                                                                   n_estimators = 9))])
 
 else:
     pipeline = Pipeline(steps=[('minmaxscaler', MinMaxScaler(feature_range=(0, 1), copy=True))  ])
@@ -65,7 +75,7 @@ else:
 # 
 # Pipeline.steps can be called to view the all the components and parameters that make up the pipeline.
 
-# In[ ]:
+# In[12]:
 
 
 # Random search code
@@ -109,7 +119,7 @@ else:
 #                               #'n_estimators': 9}
 
 
-# In[9]:
+# In[13]:
 
 
 import datetime
@@ -118,8 +128,10 @@ tstart = datetime.datetime.now()
 if classicML:
     pipeline.fit(X, y)
 else:
-    X = pipeline.fit_transform(X, y)
-    history = classifier.fit(X, y, batch_size = 128, epochs = 50, verbose = 1, validation_split=0.1)
+    if preprocessing:
+        X = pipeline.fit_transform(X, y)
+    val_split = 0.1
+    history = classifier.fit(X, y, batch_size = 128, epochs = 50, verbose = 1, validation_split=val_split)
 
 tstop = datetime.datetime.now()
 tdelta = tstop - tstart
@@ -129,26 +141,43 @@ print("Training duration in (/Hours/Minutes/Seconds/Milliseconds): {0}".format(t
 
 # Then we train our model
 
-# In[10]:
+# In[14]:
 
 
-#If you want to visualize the xgboost decision tree..
-#clf = pipeline.steps[1]
-#graph = xgb.to_graphviz(clf[1])
-#graph.render('pipelinetree')
+if classicML:
+    #If you want to visualize the xgboost decision tree..
+    clf = pipeline.steps[1]
+    graph = xgb.to_graphviz(clf[1])
+    graph.render('pipelinetree')
+else:
+    #If you want to visualize the deep learning classifier
+    history.history.keys()
+    import matplotlib.pyplot as plt
+    import seaborn
+    history.history.keys()
+    plt.plot(history.history['acc'])
+    plt.plot(history.history['val_acc'])
+    plt.title("Training accuracy")
+    plt.xlabel("Epochs")
+    plt.ylabel("Acccuracy")
+    plt.legend(['Train accuracy', 'Validation accuracy'])
+    plt.savefig("train_plot")
 
-#If you want to visualize the deep learning classifier
-history.history.keys()
-import matplotlib.pyplot as plt
-import seaborn
-history.history.keys()
-plt.plot(history.history['val_acc'])
-plt.plot(history.history['acc'])
-plt.title("Training accuracy")
-plt.xlabel("Epochs")
-plt.ylabel("Acccuracy")
-plt.legend(['Validation accuracy', 'Train accuracy'])
-#seaborn.lmplot(x = history.history['Epoch'], y = history.history['val_acc'])
+
+# In[15]:
+
+
+if classicML:
+    trainSize = len(train_df['pixel0'])
+else:
+    trainSize = len(train_df['pixel0']) * (1 - val_split)
+    valSize = trainSize * val_split #Not used atm, but perhaps we want it later on.
+    
+Trainlog = {"TrainSize":trainSize, "Time":tdelta.total_seconds()}
+def log_training():
+    df = pd.DataFrame.from_dict(Trainlog, orient = 'Index')
+    df.to_excel("train_log.xlsx")
+log_training()
 
 
 # We dont evaluate the model as this is up to the watcher, thus we save it now.
@@ -163,8 +192,13 @@ if classicML:
     print("Pipeline has been saved as pipeline.pkl")
 else:
     joblib.dump(pipeline, "pipeline.pkl")
-    joblib.dump(history.history, "history.pkl")
     print("Pipeline has been saved as pipeline.pkl")
     classifier.save('model.h5')
     print("Model has been saved as model.h5")
+
+
+# In[16]:
+
+
+trainSize
 

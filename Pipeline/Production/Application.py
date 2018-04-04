@@ -50,29 +50,33 @@ for i in range(length):
     
 data_to_submit = pd.DataFrame({'ImageId':ImageIds,
                                'Label':predictions})
-data_to_submit.to_csv("./Production/Results.csv", index = False)
+data_to_submit.to_csv("Results.csv", index = False)
 print("Predictions saved as Results.csv")
 
 import subprocess
 
-command = "kaggle competitions submit -c digit-recognizer -f ./Production/Results.csv -m \"XGBoost_with_scaling_amount_of_training_data\""
+command = "kaggle competitions submit -c digit-recognizer -f Results.csv -m \"ANN_with_scaling_amount_of_training_data\""
 
 process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
-output, error = process.communicate()
+#output, error = process.communicate()
 print(output)
 print("Predictions submitted to kaggle")
 
 
-# In[4]:
+# In[3]:
 
 
 # #Use these commands after initiating docker to setup the tools required for kaggle api usage
-#get_ipython().system('pip install kaggle')
-#get_ipython().system('cp ./kaggle.json /root/.kaggle/kaggle.json')
+#!pip install kaggle
+#!mkdir /root/.kaggle
+#!cp ./kaggle.json /root/.kaggle/kaggle.json
+
+#If output file contains kaggle.json the operation was succesfull
+#!ls -a /root/.kaggle
 
 
-# In[5]:
+# In[2]:
 
 
-#get_ipython().system('ls /root/.kaggle/')
+
 

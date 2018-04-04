@@ -7,15 +7,15 @@
 
 # Step 1. Split training and test data
 
-# In[1]:
+# In[2]:
 
 
 import pandas as pd
 import numpy as np
 
 def splitData(Trainsize, Testsize):
-    if (float(Trainsize) + Testsize) > 1:
-        raise NameError('Trainsize + Testsize can not be bigger than 1!')
+    #if (float(Trainsize) + Testsize) > 1:
+        #raise NameError('Trainsize + Testsize can not be bigger than 1!')
     #Enter data
     count = 42000
     trainsize = Trainsize #As percentage. Example: 25% should be entered as 0.25
@@ -38,7 +38,7 @@ def splitData(Trainsize, Testsize):
 
 # Step 2. Execute pipeline and run the production application.
 
-# In[2]:
+# In[3]:
 
 
 import os
@@ -53,14 +53,14 @@ def runPipeline():
         if(os.system("python Deployer.py") == 0):
             print("Deployment succesfull.")
             print("Running application test")
-            os.system("python ./Production/Application.py")
+            #os.system("python ./Production/Application.py")
         else:
             print("Deployment failed.")
     else:
         print("Model did not pass the test, aborting.")
 
 
-# In[ ]:
+# In[5]:
 
 
 def frange(start, stop, step):
@@ -69,13 +69,10 @@ def frange(start, stop, step):
         yield i
         i+=step
     
-
-for i in frange(0.2, 0.8, 0.2):
+#,
+for i in [0.001, 0.003, 0.005, 0.011, 0.02, 0.1, 0.2, 0.4, 0.6, 0.8]:
     splitData(i, 0.2)
     runPipeline()
-
-splitData(1, 0)
-runPipeline()
 
 #Run once more for final performance without test set
 #splitData(1, 0)
