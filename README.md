@@ -1,8 +1,8 @@
 # Handwritten-digit-classification
 Classification of digits with the MNIST dataset
 
-#Purpose
-My purpose of this project was to:
+# Purpose
+The purpose of this project was to:
 * Test deep learning performance vs XGBoost performance on MNIST
 * Explore and visualize the variety of metrics that can be used for classification performance
 * Learn how to save and deploy SKLearn and Keras/Tensorflow models.
