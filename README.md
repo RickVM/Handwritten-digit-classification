@@ -6,7 +6,9 @@ The purpose of this project was to:
 * Test deep learning performance vs XGBoost performance on MNIST
 * Explore and visualize the variety of metrics that can be used for classification performance
 * Learn how to save and deploy SKLearn and Keras/Tensorflow models.
-* Create a machine learning pipeline that can automatically scale and improve with data whilst guaranteeing improved performance in order to gain insights on the subject.
+* Design a machine learning pipeline that can automatically scale and improve with data whilst guaranteeing improved performance in order to gain insights on the subject.
+* Test the design
+
 
 # The pipeline consists of:
 * Simulator      (Executes the full pipeline based upon input parameters.)  
@@ -14,6 +16,7 @@ The purpose of this project was to:
 * Model watcher  (Benchmarks the model performance against a test-set and saves metrics. Returns a pass or fail.)  
 * Deployer  (If model passed the deployer saves the model in production)  
 * Application (Runs model predictions against Kaggle test-set and submits these with the Kaggle API.)  
+A visual representation and the process can be found in /design.
 
 # Usage
 The simulator can be used to run and adjust the full program aswell as the Train/test dataset size.   After making adjustments to any of the .ipynb files you need to convert the files to .py, this can be done with converter
@@ -31,4 +34,8 @@ If it failed it is saved in /Pipeline/Versions/Failed/
 * Even with a very small dataset deep learning starts with better performance than XGBoost
 * Deep learning surpasses XGBoost performance overall
 * Deep learning is actually faster on this dataset rather than XGBoost
+* As mnist is a balanced dataset in this case accuracy is a simple and valid metric to use for model performance verification. In the results you can see that it correlates heavily with all the other metrics that would show skewness and other problems.
+* Advice: If you ever have a dataset that is not balanced other metrics like the MCC can give a better overall view. Precision and recall can be used to finetune prediction post processing results.
 
+# Bonus
+Visual_validation contains a python program where you can draw your own digit to see if the model can classify it!
